@@ -11,6 +11,9 @@ config_version=5
 [application]
 
 config/name="modern-front"
+config/description="Modern Fronts is a real-time strategy game that inspired by Command & Conquer: Generals - Zero Hour, emphasizing modern warfare with a focus on technology and espionage.
+s
+Set in the near future where global tensions have escalated into a full-blown World War. The game explores a scenario where three superpowers – the United Federation (inspired by NATO countries), the Eastern Coalition (inspired by Russia and allies), and the Global Liberation Movement (a new non-state actor) – vie for global supremacy."
 run/main_scene="res://Scenes/Maps/test_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
@@ -18,6 +21,19 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*res://Scripts/Core/GameManager.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=2
+gdscript/warnings/inferred_declaration=1
+gdscript/warnings/unsafe_property_access=2
+gdscript/warnings/unsafe_method_access=2
+gdscript/warnings/unsafe_cast=2
+gdscript/warnings/return_value_discarded=2
+
+[editor]
+
+naming/scene_name_casing=1
 
 [editor_plugins]
 

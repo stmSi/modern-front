@@ -44,10 +44,10 @@ shader_params/u_triplanar = false
 shader_params/u_tile_reduction = Vector4(0, 0, 0, 0)
 shader_params/u_specular = 0.5
 
-[node name="PlayerCamera" parent="." instance=ExtResource("8_o6i4b")]
+[node name="PlayerCameraRoot" parent="." instance=ExtResource("8_o6i4b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 187.507, -3.05176e-05, 239.702)
 
-[node name="Camera3D" parent="PlayerCamera/Arm" index="0"]
+[node name="Camera3D" parent="PlayerCameraRoot/Arm" index="0"]
 current = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -56,4 +56,4 @@ environment = SubResource("Environment_rw6ti")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.275084, 0.96142, 0, -0.96142, 0.275084, 0, 100.264, 0)
 
-[editable path="PlayerCamera"]
+[editable path="PlayerCameraRoot"]
