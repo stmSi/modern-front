@@ -1,0 +1,59 @@
+[gd_scene load_steps=13 format=3 uid="uid://js0mrb1u3vav"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_mo1k1"]
+[ext_resource type="Resource" path="res://TerrainData/data.hterrain" id="2_ssigs"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_faa4p"]
+[ext_resource type="Texture2D" uid="uid://l8mp6inuky8b" path="res://TerrainData/test_scene_slot0_albedo_bump.png" id="4_4grcr"]
+[ext_resource type="Texture2D" uid="uid://cdvreovy5cppl" path="res://TerrainData/test_scene_slot1_albedo_bump.png" id="5_ubwt3"]
+[ext_resource type="Texture2D" uid="uid://bb8qfakubek4c" path="res://TerrainData/test_scene_slot0_normal_roughness.png" id="6_x16d8"]
+[ext_resource type="Texture2D" uid="uid://d2id5go1gsdu6" path="res://TerrainData/test_scene_slot1_normal_roughness.png" id="7_28rfv"]
+[ext_resource type="PackedScene" uid="uid://cdmbv4swyl2vh" path="res://Scenes/PlayerCamera/player_camera.tscn" id="8_o6i4b"]
+
+[sub_resource type="Resource" id="Resource_o8h8l"]
+script = ExtResource("3_faa4p")
+mode = 0
+textures = [[ExtResource("4_4grcr"), ExtResource("5_ubwt3")], [ExtResource("6_x16d8"), ExtResource("7_28rfv")]]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8gcfl"]
+
+[sub_resource type="Sky" id="Sky_67ou5"]
+sky_material = SubResource("ProceduralSkyMaterial_8gcfl")
+
+[sub_resource type="Environment" id="Environment_rw6ti"]
+background_mode = 2
+sky = SubResource("Sky_67ou5")
+
+[node name="TestScene" type="Node"]
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_mo1k1")
+_terrain_data = ExtResource("2_ssigs")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_o8h8l")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = false
+shader_params/u_tile_reduction = Vector4(0, 0, 0, 0)
+shader_params/u_specular = 0.5
+
+[node name="PlayerCamera" parent="." instance=ExtResource("8_o6i4b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 187.507, -3.05176e-05, 239.702)
+
+[node name="Camera3D" parent="PlayerCamera/Arm" index="0"]
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rw6ti")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.275084, 0.96142, 0, -0.96142, 0.275084, 0, 100.264, 0)
+
+[editable path="PlayerCamera"]
