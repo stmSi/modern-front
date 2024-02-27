@@ -2,13 +2,13 @@ extends Node3D
 
 ### Edge Pan Movement
 var edge_scroll_speed: float = 70.0
-var edge_threshold: float = 15.0 # 10 pixel
+var edge_threshold: float = 15.0 # pixel to trigger edge panning
 
 ### Right-Click Drag Movement
 var last_mouse_position: Vector2 = Vector2.ZERO
 var drag_speed: float = 5
 var is_dragging: bool = false
-var triggerred_dragged_threshold: float = 15.0
+var triggerred_dragged_threshold: float = 50.0 # pixels to trigger drag movement
 
 ### Grip movement
 var initial_point := Vector3.ZERO
@@ -92,7 +92,7 @@ func handle_camera_drag_movement(delta: float) -> void:
 	elif Input.is_action_pressed("mouse_drag"):
 		var relative_mouse_pos := last_mouse_position - get_viewport().get_mouse_position()
 		if relative_mouse_pos.length() >= triggerred_dragged_threshold:
-			var drag_vector := relative_mouse_pos * drag_speed * delta
+			var drag_vector := (relative_mouse_pos.length() - triggerred_dragged_threshold) * relative_mouse_pos.normalized() * drag_speed * delta
 			translate(-Vector3(drag_vector.x, 0, drag_vector.y))
 
 
