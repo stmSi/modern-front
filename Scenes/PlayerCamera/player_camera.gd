@@ -25,6 +25,11 @@ var zoom_max: float = 100.0
 # Focus Variables
 var focus_target: Node3D = null
 var cinematic_speed: float = 5.0
+@export var floor_mask := 1
+
+# Assuming you have a way to reference all character instances,
+# for simplicity, this example uses a single reference.
+@export var selected_character: Node = null
 
 @onready var camera_root: Node3D = self
 @onready var camera_3d: Camera3D = $Arm/Camera3D
@@ -32,6 +37,23 @@ var cinematic_speed: float = 5.0
 func _ready() -> void:
 	# Initialize camera position, if needed
 	pass
+
+func _unhandled_input(event: InputEvent) -> void:
+# Perform a raycast from the camera to the mouse position.
+	#if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton:
+		var inputEventMouseButton := (event as InputEventMouseButton)
+		if inputEventMouseButton.button_index == MOUSE_BUTTON_RIGHT and not inputEventMouseButton.pressed:
+			var ray_origin := camera_3d.project_ray_origin(inputEventMouseButton.position)
+			var ray_end := ray_origin + camera_3d.project_ray_normal(inputEventMouseButton.position) * 1000
+			var space_state := get_world_3d().direct_space_state
+			var ray_query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end, floor_mask)
+			var result := space_state.intersect_ray(ray_query)
+			if result.size() > 0:
+				print("Hit: ", result.collider, " at position: ", result.position)
+				if selected_character and result.collider is Node3D:
+					# If a character is selected and we clicked on a Node3D node (e.g., the ground), move the character.
+					selected_character.call("move_to", result.position)
 
 
 func _process(delta: float) -> void:
