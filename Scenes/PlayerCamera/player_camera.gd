@@ -39,11 +39,12 @@ func _ready() -> void:
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
-# Perform a raycast from the camera to the mouse position.
-	#if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.pressed:
 	if event is InputEventMouseButton:
 		var inputEventMouseButton := (event as InputEventMouseButton)
 		if inputEventMouseButton.button_index == MOUSE_BUTTON_RIGHT and not inputEventMouseButton.pressed:
+			if is_dragging:
+				return
+			# Perform a raycast from the camera to the mouse position.
 			var ray_origin := camera_3d.project_ray_origin(inputEventMouseButton.position)
 			var ray_end := ray_origin + camera_3d.project_ray_normal(inputEventMouseButton.position) * 1000
 			var space_state := get_world_3d().direct_space_state
@@ -52,6 +53,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if result.size() > 0:
 				print("Hit: ", result.collider, " at position: ", result.position)
 				if selected_character and result.collider is Node3D:
+					print(selected_character.is_in_group("MovableUnits"))
 					# If a character is selected and we clicked on a Node3D node (e.g., the ground), move the character.
 					selected_character.call("move_to", result.position)
 
@@ -88,7 +90,6 @@ func handle_zoom(delta: float) -> void:
 
 func handle_camera_edge_movement(delta: float) -> void:
 	var mouse_position := get_viewport().get_mouse_position()
-
 	var viewport_size := get_viewport().get_visible_rect().size
 
 	if mouse_position.x > viewport_size.x - edge_threshold:
@@ -106,7 +107,6 @@ func handle_camera_edge_movement(delta: float) -> void:
 func handle_camera_drag_movement(delta: float) -> void:
 	### CnC Generals ZH like camera movement
 	if Input.is_action_just_pressed("mouse_drag"):
-		is_dragging = true
 		last_mouse_position = get_viewport().get_mouse_position()
 	elif Input.is_action_just_released("mouse_drag"):
 		is_dragging = false
@@ -114,6 +114,7 @@ func handle_camera_drag_movement(delta: float) -> void:
 	elif Input.is_action_pressed("mouse_drag"):
 		var relative_mouse_pos := last_mouse_position - get_viewport().get_mouse_position()
 		if relative_mouse_pos.length() >= triggerred_dragged_threshold:
+			is_dragging = true
 			var drag_vector := (relative_mouse_pos.length() - triggerred_dragged_threshold) * relative_mouse_pos.normalized() * drag_speed * delta
 			translate(-Vector3(drag_vector.x, 0, drag_vector.y))
 

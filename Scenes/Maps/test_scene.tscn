@@ -46,16 +46,15 @@ shader_params/u_triplanar = false
 shader_params/u_tile_reduction = Vector4(0, 0, 0, 0)
 shader_params/u_specular = 0.5
 
-[node name="PlayerCameraRoot" parent="." node_paths=PackedStringArray("selected_character") instance=ExtResource("8_o6i4b")]
+[node name="PlayerCamera" parent="." node_paths=PackedStringArray("selected_character") instance=ExtResource("8_o6i4b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 187.507, -3.05176e-05, 239.702)
 selected_character = NodePath("../TestMovableUnit")
 
-[node name="Arm" parent="PlayerCameraRoot" index="0"]
+[node name="Arm" parent="PlayerCamera" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.8238, 90.7246, 16.4165)
 
-[node name="Camera3D" parent="PlayerCameraRoot/Arm" index="0"]
-transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, 0, -3.00694, 0)
-current = true
+[node name="Camera3D" parent="PlayerCamera/Arm" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, 0, 36.8155, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_rw6ti")
@@ -69,7 +68,7 @@ directional_shadow_max_distance = 280.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 465.861, 3.8147e-06, 440.574)
 
 [node name="TestMovableUnit" parent="." instance=ExtResource("12_73u22")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.086, 1.52588e-05, 262.836)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 176.193, 1.52588e-05, 248.208)
 collision_layer = 2
 
-[editable path="PlayerCameraRoot"]
+[editable path="PlayerCamera"]

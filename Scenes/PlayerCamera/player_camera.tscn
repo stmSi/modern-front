@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cdmbv4swyl2vh"]
+[gd_scene load_steps=4 format=3 uid="uid://cdmbv4swyl2vh"]
 
 [ext_resource type="Script" path="res://Scenes/PlayerCamera/player_camera.gd" id="1_mp1mi"]
+[ext_resource type="Script" path="res://Scenes/PlayerCamera/SelectionBox.gd" id="2_xedyl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ibswb"]
+bg_color = Color(0.377868, 0.688626, 0.33495, 0.470588)
 
 [node name="CameraRoot" type="Node3D"]
 script = ExtResource("1_mp1mi")
@@ -9,4 +13,21 @@ script = ExtResource("1_mp1mi")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -92.6721, 90.7246, -1.52588e-05)
 
 [node name="Camera3D" type="Camera3D" parent="Arm"]
-transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 0, 0)
+current = true
+fov = 45.0
+
+[node name="SelectionBox" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("2_xedyl")
+selection_color = Color(0.607843, 1, 0.607843, 0.380392)
+selection_border_color = Color(0.793825, 0.919243, 0.79821, 0.729412)
+
+[node name="Panel" type="Panel" parent="SelectionBox"]
+visible = false
+layout_mode = 0
+offset_right = 85.0
+offset_bottom = 64.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ibswb")
