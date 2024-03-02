@@ -29,42 +29,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		selection_end = (event as InputEventMouseMotion).position
 		queue_redraw()
 
-func update_selection_box() -> void:
-	var rect_min := selection_start
-	var rect_max := selection_end
-	if selection_end.x < selection_start.x:
-		rect_min.x = selection_end.x
-		rect_max.x = selection_start.x
-	if selection_end.y < selection_start.y:
-		rect_min.y = selection_end.y
-		rect_max.y = selection_start.y
-	selection_box.get_rect().position = rect_min
-	selection_box.get_rect().size = rect_max - rect_min
-	var color := Color.html("#60b05578")
-	var points := PackedVector2Array([selection_start,
-								  Vector2(selection_end.x, selection_start.y),
-								  selection_end,
-								  Vector2(selection_start.x, selection_end.y),
-								  selection_start])
-
-	var colors := PackedColorArray([
-		Color.html("#60b05578"), # Top Start
-		Color.html("#60b05578"), # Top End
-		Color.html("#60905528"), # Bottom End
-		Color.html("#60905528"), # Bottom Start
-		Color.html("#60b05578")  # Back to Top Start for closure
-	])
-
-	draw_polyline_colors(points, colors, 2.0, true)
 
 func _draw() -> void:
 	if is_selecting:
-		# Calculate rectangle bounds
 		var rect_min := selection_start
 		var rect_max := selection_end
+
+		# Horizontal Swapping
 		if selection_end.x < selection_start.x:
 			rect_min.x = selection_end.x
 			rect_max.x = selection_start.x
+		# Vertical Swapping
 		if selection_end.y < selection_start.y:
 			rect_min.y = selection_end.y
 			rect_max.y = selection_start.y
