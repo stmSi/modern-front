@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://6rsd5wv3j63c"]
+
+[ext_resource type="Script" path="res://Scenes/UI/FPS/FPS.gd" id="1_jyj8o"]
+
+[node name="FPS" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_jyj8o")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
