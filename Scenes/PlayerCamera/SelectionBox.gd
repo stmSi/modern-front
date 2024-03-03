@@ -20,6 +20,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				selection_start = inputEventMouseButton.position
 				selection_end = inputEventMouseButton.position
 			else:
+				EventBus.selection_box_confirm.emit(selection_start, selection_end)
 				is_selecting = false
 				selection_start = Vector2.ZERO
 				selection_end = Vector2.ZERO
@@ -27,6 +28,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion and is_selecting:
 		selection_end = (event as InputEventMouseMotion).position
+		EventBus.selection_box_dragging.emit(selection_start, selection_end)
 		queue_redraw()
 
 

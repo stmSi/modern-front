@@ -29,14 +29,16 @@ var cinematic_speed: float = 5.0
 
 # Assuming you have a way to reference all character instances,
 # for simplicity, this example uses a single reference.
-@export var selected_character: Node = null
+@export var selected_objs: Array[Node] = []
 
 @onready var camera_root: Node3D = self
 @onready var camera_3d: Camera3D = $Arm/Camera3D
 
 func _ready() -> void:
-	# Initialize camera position, if needed
-	pass
+	var success := EventBus.selection_box_confirm.connect(self._on_selection_box_comfirm)
+	if(success != OK):
+		printerr("EventBus.selection_box_dragging failed to connect")
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -50,13 +52,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			var space_state := get_world_3d().direct_space_state
 			var ray_query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end, floor_mask)
 			var result := space_state.intersect_ray(ray_query)
-			if result.size() > 0:
-				print("Hit: ", result.collider, " at position: ", result.position)
-				if selected_character and result.collider is Node3D:
-					print(selected_character.is_in_group("MovableUnits"))
-					# If a character is selected and we clicked on a Node3D node (e.g., the ground), move the character.
-					selected_character.call("move_to", result.position)
-
+			if result.size() > 0 and result.collider is Node3D:
+				for obj in selected_objs:
+					if obj.is_in_group("MovableUnits"):
+						obj.call("move_to", result.position)
 
 func _process(delta: float) -> void:
 	handle_camera_wasd_arrow_movement(delta)
@@ -152,3 +151,22 @@ func follow_focus_target(delta: float) -> void:
 # Call this function to set a new focus target
 func set_focus_target(target: Node3D) -> void:
 	focus_target = target
+
+func _on_selection_box_comfirm(start: Vector2, end: Vector2) -> void:
+	# Ensure start is the top-left corner and end is the bottom-right corner
+	var rect_min := Vector2(min(start.x, end.x), min(start.y, end.y))
+	var rect_max := Vector2(max(start.x, end.x), max(start.y, end.y))
+	var rect := Rect2(start, end - start)
+	# Reset the selection
+	selected_objs.clear()
+
+	# Iterate over all selectable objects
+	for obj in get_tree().get_nodes_in_group("BoxSelectable"):
+		if obj is Node3D:
+			# Convert the object's global position to screen space
+			var screen_pos := camera_3d.unproject_position(obj.global_transform.origin)
+			# Check if the screen position falls within the selection box
+			if rect_min.x <= screen_pos.x and screen_pos.x <= rect_max.x and rect_min.y <= screen_pos.y and screen_pos.y <= rect_max.y:
+				# The object's screen position is within the selection box
+				selected_objs.append(obj)
+				# Perform any additional logic needed for selection, such as highlighting
