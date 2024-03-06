@@ -60,7 +60,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	handle_camera_wasd_arrow_movement(delta)
 	handle_zoom(delta)
-	handle_camera_edge_movement(delta)
+	#handle_camera_edge_movement(delta)
 	handle_camera_drag_movement(delta)
 	handle_camera_grip_movement(delta)
 	if focus_target:

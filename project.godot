@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 
 GameManager="*res://Scripts/Core/GameManager.gd"
 EventBus="*res://Scripts/Core/EventBus.gd"
+ReservationManager="*res://Scripts/Core/ReservationManager.gd"
 
 [debug]
 

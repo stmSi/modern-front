@@ -23,7 +23,7 @@ anchors_preset = 0
 mouse_filter = 1
 script = ExtResource("2_xedyl")
 selection_color = Color(0.607843, 1, 0.607843, 0.380392)
-selection_border_color = Color(0.793825, 0.919243, 0.79821, 0.729412)
+selection_border_color = Color(0.805166, 0.911574, 0.814856, 0.898039)
 
 [node name="Panel" type="Panel" parent="SelectionBox"]
 visible = false
